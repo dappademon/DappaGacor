@@ -9,7 +9,7 @@ class PendudukSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run() 
     {
         $penduduk = [
             [
@@ -19,6 +19,7 @@ class PendudukSeeder extends Seeder
             ]            
         ];
 
+        // Baris untuk mengeksekusi data ke tabel
         DB::table('penduduks')->insert($penduduk);
 
     }
