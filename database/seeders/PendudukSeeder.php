@@ -11,14 +11,15 @@ class PendudukSeeder extends Seeder
      */
     public function run()
     {
-        penduduk = [
+        $penduduk = [
             [
                 'nik' => '1234567890123456',
                 'name' => 'John Doe',
                 'address' => 'Jl. Contoh Alamat No. 1',
-
-            
+            ]            
         ];
+
+        DB::table('penduduks')->insert($penduduk);
 
     }
 }
