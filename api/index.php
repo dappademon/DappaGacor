@@ -1,29 +1,48 @@
 <?php
 
-/**
- * Laravel on Vercel Entry Point
- * Dibuat khusus untuk menangani routing serverless.
- */
+// Paksa PHP mencetak semua error sekecil apa pun (biarkan ini sementara)
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
 
-// 1. Arahkan autoload ke folder vendor yang benar
-require __DIR__ . '/../vendor/autoload.php';
+try {
+    require __DIR__ . '/../vendor/autoload.php';
 
-// 2. Inisialisasi aplikasi Laravel
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+    // Pindahkan direktori cache ke /tmp sebelum memuat bootstrap/app.php
+    $storagePath = $_ENV['APP_STORAGE'] ?? '/tmp/storage';
+    
+    // Pastikan environment variables untuk cache di-set
+    putenv("APP_CONFIG_CACHE={$storagePath}/framework/cache/config.php");
+    putenv("APP_EVENTS_CACHE={$storagePath}/framework/cache/events.php");
+    putenv("APP_PACKAGES_CACHE={$storagePath}/framework/cache/packages.php");
+    putenv("APP_ROUTES_CACHE={$storagePath}/framework/cache/routes.php");
+    putenv("APP_SERVICES_CACHE={$storagePath}/framework/cache/services.php");
+    putenv("VIEW_COMPILED_PATH={$storagePath}/framework/views");
 
-/**
- * 3. Paksa Laravel menggunakan folder /tmp untuk storage.
- * Ini krusial karena Vercel bersifat read-only.
- */
-$app->useStoragePath('/tmp');
+    // Buat sub-folder yang dibutuhkan
+    $directories = [
+        $storagePath . '/app/public',
+        $storagePath . '/framework/cache/data',
+        $storagePath . '/framework/views',
+        $storagePath . '/framework/sessions',
+        $storagePath . '/logs',
+    ];
 
-// 4. Jalankan kernel untuk menangani request
-$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+    foreach ($directories as $dir) {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+    }
 
-$response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
-);
+    $app = require_once __DIR__ . '/../bootstrap/app.php';
+    $app->useStoragePath($storagePath);
 
-$response->send();
+    $app->handleRequest(Illuminate\Http\Request::capture());
 
-$kernel->terminate($request, $response);
+} catch (\Throwable $e) {
+    echo "<div style='font-family: monospace; background: #ffebee; padding: 20px; border: 1px solid #c62828; color: #b71c1c;'>";
+    echo "<h2>🚨 Error Masih Ada:</h2>";
+    echo "<b>Pesan:</b> " . $e->getMessage() . "<br><br>";
+    echo "<b>File:</b> " . $e->getFile() . "<br>";
+    echo "<b>Baris:</b> " . $e->getLine() . "<br><br>";
+    echo "</div>";
+}
