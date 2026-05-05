@@ -7,7 +7,7 @@
         <h1 class="text-2xl font-bold text-gray-800">Tambah User Baru</h1>
         <a href="{{ route('users.index') }}" class="text-gray-600 hover:text-gray-900 flex items-center gap-2">
             <i class="fas fa-arrow-left"></i> Kembali
-        </a>
+        </a> 
     </div>
 
     <div class="bg-white rounded-xl shadow p-6">
