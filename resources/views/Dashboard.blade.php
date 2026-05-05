@@ -4,7 +4,7 @@
 @section('content')
 <h1 class="text-2xl font-bold text-gray-800 mb-6">Dashboard</h1>
  
-{{-- Stats Cards --}}
+{{-- Stats Cardss --}}
 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
     <div class="bg-blue-600 text-white rounded-xl p-5 shadow">
         <p class="text-sm opacity-80">Total Arsip</p>
