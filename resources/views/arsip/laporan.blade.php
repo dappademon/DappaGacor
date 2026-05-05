@@ -33,11 +33,11 @@
                         @forelse($arsips as $arsip)
                             <!-- Meniru style baris tabel -->
                             <tr style="border-bottom: 1px solid #edf2f7;">
-                                <td style="padding: 16px; border-top: none; color: #1a202c; font-weight: 600;">{{ $arsip->no_surat ?? '-' }}</td>
-                                <td style="padding: 16px; border-top: none;">{{ $arsip->judul }}</td>
-                                <td style="padding: 16px; border-top: none;">{{ $arsip->kategori->nama ?? '-' }}</td>
-                                <td style="padding: 16px; border-top: none;">{{ $arsip->penduduk->nama ?? '-' }}</td>
-                                <td style="padding: 16px; border-top: none;">{{ $arsip->created_at->format('d/m/Y') }}</td>
+                                <td style="padding: 16px; border-top: none; color: #1a202c; font-weight: 600;">{{ $arsip->archive_number ?? '-' }}</td>
+                                <td style="padding: 16px; border-top: none;">{{ $arsip->title }}</td>
+                                <td style="padding: 16px; border-top: none;">{{ $arsip->kategori->name ?? '-' }}</td>
+                                <td style="padding: 16px; border-top: none;">{{ $arsip->penduduk->name ?? '-' }}</td>
+                                <td style="padding: 16px; border-top: none;">{{ $arsip->document_date->format('d/m/Y') }}</td>
                             </tr>
                         @empty
                             <!-- Meniru persis teks kosong "Belum ada arsip" yang ada di gambar -->
